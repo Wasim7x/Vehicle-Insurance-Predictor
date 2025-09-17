@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
@@ -20,7 +21,8 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Set up Jinja2 template engine for rendering HTML templates
-templates = Jinja2Templates(directory='templates')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Allow all origins for Cross-Origin Resource Sharing (CORS)
 origins = ["*"]
@@ -139,6 +141,7 @@ async def predictRouteClient(request: Request):
         
     except Exception as e:
         return {"status": False, "error": f"{e}"}
+    
 
 # Main entry point to start the FastAPI server
 if __name__ == "__main__":
